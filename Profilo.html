@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo Utente</title>
+    <link rel="icon" href="icons8-scommesse-48.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: black; /* Cambia il colore dello sfondo a nero */
+            color: white; /* Cambia il colore del testo a bianco */
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: gold; /* Cambia il colore del bottone a oro */
+            color: black; /* Cambia il colore del testo del bottone a nero */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px; /* Aggiungi margine sopra il pulsante */
+        }
+        button:hover {
+            background-color: #ffd700; /* Cambia il colore del bottone quando si passa sopra a oro chiaro */
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        h1 {
+            margin-top: 40px; /* Aggiungi margine sopra la scritta Profilo Utente */
+        }
+        /* Imposta larghezza fissa per i campi password */
+        input[type="password"] {
+            width: 250px;
+        }
+        .back-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .back-container i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-container" onclick="window.location.href='PaginaPrincipale.html'">
+        <i class="fas fa-arrow-left" title="Indietro"></i>
+        <span>Indietro</span>
+    </div>
+    <h1>Profilo Utente</h1>
+    <div>
+        <h2>Dati Utente:</h2>
+        <p><strong>Nome e Cognome:</strong> <span id="userName"></span></p>
+        <p><strong>Email:</strong> <span id="userEmail"></span></p>
+        <p><strong>Password:</strong> <span id="userPassword">********</span></p>
+    </div>
+    <form id="profileForm">
+        <h2>Modifica Password:</h2>
+        <label for="oldPassword">Vecchia Password:</label>
+        <input type="password" id="oldPassword" name="oldPassword" required>
+        <label for="password">Nuova Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Salva Modifiche</button>
+    </form>
+    
+    <footer>&copy; 2024 Michele Antonio Claps</footer>
+
+    <script>
+        // Funzione per popolare i dati del profilo dall sessionStorage
+        function populateProfile() {
+            document.getElementById('userName').textContent = sessionStorage.getItem('userName') || '';
+            document.getElementById('userEmail').textContent = sessionStorage.getItem('userEmail') || '';
+            document.getElementById('userPassword').textContent = '*'.repeat((sessionStorage.getItem('userPassword') || '').length);
+        }
+
+        // Funzione per gestire il salvataggio delle modifiche al profilo
+        function saveProfile(event) {
+            event.preventDefault(); // Evita il comportamento predefinito del form
+
+            // Recupera i valori inseriti dall'utente
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('password').value;
+
+            // Aggiorna i dati del profilo
+            if (oldPassword === sessionStorage.getItem('userPassword')) {
+                sessionStorage.setItem('userPassword', newPassword);
+
+                // Aggiorna l'HTML con i nuovi dati
+                document.getElementById('userPassword').textContent = '*'.repeat(newPassword.length);
+
+                // Messaggio di conferma
+                alert("Modifiche salvate con successo!");
+
+                // Pulisci i campi del form
+                document.getElementById('oldPassword').value = "";
+                document.getElementById('password').value = "";
+            } else {
+                alert("La vecchia password non corrisponde.");
+            }
+        }
+
+        // Popola i dati del profilo quando la pagina è completamente caricata
+        document.addEventListener('DOMContentLoaded', populateProfile);
+
+        // Aggiungi un gestore per l'evento submit del form
+        document.getElementById('profileForm').addEventListener('submit', saveProfile);
+    </script>
+</body>
+</html>

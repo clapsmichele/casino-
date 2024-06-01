@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Principale</title>
+    <link rel="icon" href="icons8-scommesse-48.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Sfondo nero */
+            color: white; /* Testo bianco */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .welcome-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        .profile-container, .logout-container, .credit-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .profile-container {
+            margin-right: 20px; /* Spacing between profile and logout */
+        }
+        .profile-container i, .logout-container i, .credit-container i {
+            margin-left: 5px;
+        }
+        .menu-container {
+            display: flex;
+            align-items: center;
+        }
+        .credit-container {
+            margin-right: 10px; /* Add spacing between credit and profile */
+            position: relative; /* Position relative for absolute positioning of the popup */
+        }
+        .credit-popup {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            padding: 10px;
+            top: 100%; /* Position below the credit container */
+            left: 50%;
+            transform: translateX(-50%); /* Center the popup */
+            z-index: 1;
+        }
+        .credit-popup button {
+            margin-top: 5px;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+        .credit-container.active .credit-popup {
+            background-color: black;
+            color: white;
+        }
+        .credit-container.active .credit-popup button {
+            background-color: gold;
+            color: black;
+            border: none;
+        }
+        .card {
+            background-color: black; /* Cambia il colore di sfondo della card a nero */
+            color: white; /* Cambia il colore del testo a bianco */
+            border: 1px solid #444; /* Bordo grigio scuro */
+            text-align: center; /* Centra il contenuto della card */
+            height: 200px; /* Altezza fissa per uniformare le card */
+            display: flex; /* Imposta la visualizzazione a flex per allineare il contenuto */
+            flex-direction: column; /* Allinea il contenuto in colonne */
+        }
+        .card-title {
+            color: white; /* Cambia il colore del titolo a bianco */
+            flex-grow: 1; /* Fai espandere il titolo per riempire lo spazio */
+        }
+        .card-text {
+            color: white; /* Cambia il colore del testo a bianco */
+        }
+        .btn-gold {
+            background-color: gold; /* Cambia il colore del pulsante a oro */
+            border-color: gold;
+            color: black; /* Cambia il colore del testo del pulsante a nero */
+        }
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            max-height: 100%; /* Imposta l'altezza massima dell'immagine al 100% */
+            object-fit: cover; /* Copri l'area dell'immagine mantenendo le proporzioni */
+        }
+        .card-body {
+            flex-grow: 1; /* Fai espandere il corpo della card per riempire lo spazio */
+        }
+        .row:first-child {
+            margin-bottom: 165px; /* Aumenta il margine inferiore alla prima riga di card per lasciare più spazio */
+        }
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Recupera il nome dell'utente dalla sessionStorage
+            const userName = sessionStorage.getItem('userName');
+            if (userName) {
+                // Se è presente, inserisci il nome nell'elemento HTML
+                document.getElementById('welcomeMessage').textContent = "Benvenuto, " + userName + ".";
+            }
+            // Aggiungi un evento click alla credit-container per mostrare/nascondere il popup
+            document.querySelector('.credit-container').addEventListener('click', function() {
+                const popup = document.querySelector('.credit-popup');
+                popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+                this.classList.toggle('active');
+            });
+        }
+
+        function logout() {
+            // Cancella la sessionStorage
+            sessionStorage.clear();
+            // Reindirizza alla pagina di login
+            window.location.href = 'Accesso.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="welcome-container">
+        <span id="welcomeMessage"></span>
+        <div class="menu-container">
+            <div class="credit-container">
+                <span>Credito 0.0€</span>
+                <div class="credit-popup">
+                    <button>Ricarica Credito</button>
+                    <button>Ritira Credito</button>
+                </div>
+            </div>
+            <div class="profile-container" onclick="window.location.href='Profilo.html'">
+                <span>Profilo</span>
+                <i class="fas fa-user" title="Profilo"></i>
+            </div>
+            <div class="logout-container" onclick="logout()">
+                <span>Logout</span>
+                <i class="fas fa-sign-out-alt" title="Logout"></i>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <img src="Aviator.jpg" class="card-img-top" alt="Aviator">
+                    <div class="card-body">
+                        <h4 class="card-title">Aviator</h4>
+                        <div class="text-center">
+                            <a href="https://zetcasino8.com/it/game/aviator" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <img src="BlackJack.jpg" class="card-img-top" alt="BlackJack">
+                    <div class="card-body">
+                        <h4 class="card-title">BlackJack</h4>
+                        <div class="text-center">
+                            <a href="https://www.sisal.it/casino/sisal-blackjack-first-person" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <img src="Crazy-Time.jpg" class="card-img-top" alt="Crazy-Time">
+                    <div class="card-body">
+                        <h4 class="card-title">Crazy-Time</h4>
+                        <div class="text-center">
+                            <a href="https://www.sisal.it/slot/crazy-time" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <img src="GrattaEVinci.jpg" class="card-img-top" alt="Gratta E Vinci">
+                    <div class="card-body">
+                        <h4 class="card-title">Gratta E Vinci</h4>
+                        <div class="text-center">
+                            <a href="https://www.grattaevincionline.it/" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4"> <!-- Spacing to center the card -->
+                <div class="card">
+                    <img src="Slot-Machine.jpg" class="card-img-top" alt="Slot">
+                    <div class="card-body">
+                        <h4 class="card-title">Slot</h4>
+                        <div class="text-center">
+                            <a href="https://www.machineslotonline.it/slot/pragmatic-play" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="card">
+                    <img src="Roulette.jpg" class="card-img-top" alt="Roulette">
+                    <div class="card-body">
+                        <h4 class="card-title">Roulette</h4>
+                        <div class="text-center">
+                            <a href="https://www.lottomatica.it/casino/table-games/giochi/roulette-classic" class="btn btn-gold">Link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>&copy; 2024 Michele Antonio Claps</footer>
+    </body>
+    </html>

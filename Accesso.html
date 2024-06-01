@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi</title>
+    <link rel="icon" href="icons8-scommesse-48.png" type="image/x-icon">
+
+    <style>
+        body {
+            background-color: #000; /* Sfondo nero */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #333; /* Grigio scuro */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            text-align: center;
+            color: white; /* Testo bianco */
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .container input[type="text"],
+        .container input[type="email"],
+        .container input[type="password"],
+        .container input[type="date"] {
+            width: calc(100% - 20px); /* Riduce la larghezza per lasciare spazio ai padding */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #555; /* Bordo grigio scuro */
+            border-radius: 4px;
+            background-color: #444; /* Sfondo dei campi input */
+            color: white; /* Testo bianco nei campi input */
+        }
+        .container input[type="text"]::placeholder,
+        .container input[type="email"]::placeholder,
+        .container input[type="password"]::placeholder,
+        .container input[type="date"]::placeholder {
+            color: #ccc; /* Colore del placeholder */
+        }
+        .container .additional-fields {
+            display: none; /* Nasconde i campi aggiuntivi all'inizio */
+        }
+        .container button {
+            width: 45%; /* Larghezza ridotta per adattarsi */
+            padding: 10px;
+            margin: 10px 2.5%; /* Spazio tra i pulsanti */
+            border: none;
+            border-radius: 4px;
+            background-color: #FFD700; /* Colore oro */
+            color: black; /* Testo nero */
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .container button.login {
+            background-color: #FFD700; /* Colore oro */
+            color: black; /* Testo nero */
+        }
+        .container button:disabled {
+            background-color: #666; /* Colore pulsante disabilitato */
+            cursor: not-allowed;
+        }
+        .container button:hover {
+            opacity: 0.8; /* Effetto hover */
+        }
+
+        /* Aggiunta del logo del calendario bianco */
+        input[type="date"] {
+            position: relative;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1); /* Inverti i colori per rendere il calendario bianco */
+        }
+        /* Rendere lo scroll più veloce */
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Stile per il messaggio di errore */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        /* Stile per il messaggio di successo */
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+
+        /* Stile per il footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #000; /* Sfondo nero */
+            color: white; /* Testo bianco */
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+    <script>
+        function validateAge(event, redirectPage) {
+            event.preventDefault();
+            const nome = document.querySelector('input[name="nome"]').value; // Recupera il nome dall'input
+            const cognome = document.querySelector('input[name="cognome"]').value; // Recupera il cognome dall'input
+            const email = document.querySelector('input[name="email"]').value; // Recupera l'email dall'input
+            const password = document.querySelector('input[name="password"]').value; // Recupera la password dall'input
+            const birthDate = new Date(document.querySelector('input[name="data-nascita"]').value);
+            const currentDate = new Date();
+            let age = currentDate.getFullYear() - birthDate.getFullYear();
+            const m = currentDate.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                document.getElementById('error-message').textContent = "Sei un minorenne, non puoi registrarti su questo sito.";
+                document.getElementById('success-message').textContent = "";
+            } else if (!validateEmail(email)) {
+                document.getElementById('error-message').textContent = "Inserisci un'email valida che termini con @gmail.com.";
+                document.getElementById('success-message').textContent = "";
+            } else {
+                // Memorizza il nome, il cognome, l'email e la password dell'utente nella sessionStorage
+                sessionStorage.setItem('userName', nome + ' ' + cognome);
+                sessionStorage.setItem('userEmail', email);
+                sessionStorage.setItem('userPassword', password);
+                document.getElementById('error-message').textContent = "";
+                document.getElementById('success-message').textContent = "Il tuo account è stato creato con successo!";
+                window.location.href = redirectPage; // Reindirizza alla pagina specificata
+            }
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@gmail\.com$/i;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function goToLoginPage() {
+            const email = document.querySelector('input[name="email"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+
+            if (!email || !password) {
+                document.getElementById('error-message').textContent = "Inserisci sia l'email che la password.";
+            } else {
+                window.location.href = 'PaginaPrincipale.html';
+            }
+        }
+
+        function switchToRegistrationForm() {
+            // Resetta i messaggi di errore e successo
+            document.getElementById('error-message').textContent = "";
+            document.getElementById('success-message').textContent = "";
+
+            // Pulisce tutti i campi del modulo
+            clearFields();
+
+            // Mostra i campi aggiuntivi
+            document.querySelector('.additional-fields').style.display = 'block';
+
+            // Cambia il testo e l'azione del pulsante "Crea Account"
+            const createAccountButton = document.querySelector('.create-account');
+            createAccountButton.textContent = "Verifica e Crea Account";
+            createAccountButton.setAttribute('onclick', 'submitForm(event)');
+
+            // Disabilita il pulsante "Login"
+            document.querySelector('.login').setAttribute('disabled', true);
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const nome = document.querySelector('input[name="nome"]').value;
+            const cognome = document.querySelector('input[name="cognome"]').value;
+            const dataNascita = document.querySelector('input[name="data-nascita"]').value;
+            const email = document.querySelector('input[name="email"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+
+            if (nome && cognome && dataNascita && email && password) {
+                validateAge(event, 'PaginaPrincipale.html');
+            } else {
+                document.getElementById('error-message').textContent = "Compila tutti i campi per registrarti.";
+            }
+        }
+
+        function clearFields() {
+            // Pulisce tutti i campi del modulo
+            const fields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="date"]');
+            fields.forEach(field => {
+                field.value = "";
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Accedi</h2>
+        <form>
+            <!-- Campi aggiuntivi per la registrazione -->
+            <div class="additional-fields">
+                <input type="text" name="nome" placeholder="Nome" required>
+                <input type="text" name="cognome" placeholder="Cognome" required>
+                <input type="date" name="data-nascita" placeholder="Data di nascita" required>
+            </div>
+            <!-- Solo campi Email e Password all'avvio -->
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <!-- Pulsanti Crea Account e Login -->
+            <div style="display: flex; justify-content: space-between;">
+                <button type="button" class="create-account" onclick="switchToRegistrationForm()">Crea Account</button>
+                <button type="button" class="login" onclick="goToLoginPage()">Login</button>
+            </div>
+            <!-- Messaggi di errore e successo -->
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+        </form>
+    </div>
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 Michele Antonio Claps
+    </footer>
+</body>
+</html>
